@@ -16,6 +16,7 @@ const count = ref(0)
       <code>components/HelloWorld.vue</code> to test HMR
     </p>
   </div>
+  <n-button>naive-ui</n-button>
 
   <p>
     Check out
@@ -30,6 +31,14 @@ const count = ref(0)
   </p>
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
+<script lang="ts">
+import { NButton } from 'naive-ui'
+export default {
+  components: {
+    NButton
+  }
+}
+</script>
 
 <style scoped>
 .read-the-docs {
