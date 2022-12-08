@@ -1,46 +1,78 @@
-import type { AppRouteRecordRaw, AppRouteModule } from '/@/router/types';
+import { getLoginModuleRegExp } from '@/utils';
 
-import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
-
-import { mainOutRoutes } from './mainOut';
-import { PageEnum } from '/@/enums/pageEnum';
-import { t } from '/@/hooks/web/useI18n';
-
-const modules = import.meta.globEager('./modules/**/*.ts');
-
-const routeModuleList: AppRouteModule[] = [];
-
-Object.keys(modules).forEach((key) => {
-  const mod = modules[key].default || {};
-  const modList = Array.isArray(mod) ? [...mod] : [mod];
-  routeModuleList.push(...modList);
-});
-
-export const asyncRoutes = [PAGE_NOT_FOUND_ROUTE, ...routeModuleList];
-
-export const RootRoute: AppRouteRecordRaw = {
+/** 根路由: / */
+export const ROOT_ROUTE: AuthRoute.Route = {
+  name: 'root',
   path: '/',
-  name: 'Root',
-  redirect: PageEnum.BASE_HOME,
+  redirect: import.meta.env.VITE_ROUTE_HOME_PATH,
   meta: {
-    title: 'Root',
-  },
+    title: 'Root'
+  }
 };
 
-export const LoginRoute: AppRouteRecordRaw = {
-  path: '/login',
-  name: 'Login',
-  component: () => import('/@/views/sys/login/Login.vue'),
-  meta: {
-    title: t('routes.basic.login'),
+/** 固定的路由 */
+export const constantRoutes: AuthRoute.Route[] = [
+  ROOT_ROUTE,
+  {
+    name: 'login',
+    path: '/login',
+    component: 'self',
+    props: route => {
+      const moduleType = (route.params.module as EnumType.LoginModuleKey) || 'pwd-login';
+      return {
+        module: moduleType
+      };
+    },
+    meta: {
+      title: '登录',
+      dynamicPath: `/login/:module(${getLoginModuleRegExp()})?`,
+      singleLayout: 'blank'
+    }
   },
-};
-
-// Basic routing without permission
-export const basicRoutes = [
-  LoginRoute,
-  RootRoute,
-  ...mainOutRoutes,
-  REDIRECT_ROUTE,
-  PAGE_NOT_FOUND_ROUTE,
+  {
+    name: 'constant-page',
+    path: '/constant-page',
+    component: 'self',
+    meta: {
+      title: '固定页面',
+      singleLayout: 'blank'
+    }
+  },
+  {
+    name: '403',
+    path: '/403',
+    component: 'self',
+    meta: {
+      title: '无权限',
+      singleLayout: 'blank'
+    }
+  },
+  {
+    name: '404',
+    path: '/404',
+    component: 'self',
+    meta: {
+      title: '未找到',
+      singleLayout: 'blank'
+    }
+  },
+  {
+    name: '500',
+    path: '/500',
+    component: 'self',
+    meta: {
+      title: '服务器错误',
+      singleLayout: 'blank'
+    }
+  },
+  // 匹配无效路径的路由
+  {
+    name: 'not-found',
+    path: '/:pathMatch(.*)*',
+    component: 'blank',
+    meta: {
+      title: '未找到',
+      singleLayout: 'blank'
+    }
+  }
 ];

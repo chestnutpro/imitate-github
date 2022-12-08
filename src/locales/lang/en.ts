@@ -1,13 +1,21 @@
-import {genMessage} from '../helper';
-import antdLocale from 'ant-design-vue/es/locale/en_US';
-// import momentLocale from 'moment/dist/locale/en-us';
+import type { LocaleMessages } from 'vue-i18n';
 
-const modules = import.meta.glob('./en/**/*.ts');
-export default {
-    message: {
-        ...genMessage(modules, 'en'),
-        antdLocale,
+const locale: LocaleMessages<I18nType.Schema> = {
+  message: {
+    system: {
+      title: 'SoybeanAdmin'
     },
-    momentLocale: null,
-    momentLocaleName: 'en',
+    routes: {
+      dashboard: {
+        dashboard: 'Dashboard',
+        analysis: 'Analysis',
+        workbench: 'Workbench'
+      },
+      about: {
+        about: 'About'
+      }
+    }
+  }
 };
+
+export default locale;
