@@ -6,7 +6,6 @@ export default defineConfig(configEnv => {
     const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ImportMetaEnv;
 
     const rootPath = getRootPath();
-    console.log(rootPath);
     const srcPath = getSrcPath();
 
     const isOpenProxy = viteEnv.VITE_HTTP_PROXY === 'Y';
@@ -37,17 +36,7 @@ export default defineConfig(configEnv => {
             proxy: createViteProxy(isOpenProxy, envConfig)
         },
         optimizeDeps: {
-            include: [
-                // '@antv/data-set',
-                // '@antv/g2',
-                // '@better-scroll/core',
-                // 'echarts',
-                // 'swiper',
-                // 'swiper/vue',
-                // 'vditor',
-                // 'wangeditor',
-                // 'xgplayer'
-            ]
+            include: []
         },
         build: {
             reportCompressedSize: false,
