@@ -1,4 +1,4 @@
-import type {PluginOption} from 'vite';
+import type { PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 // import unocss from '@unocss/vite';
@@ -16,24 +16,24 @@ import pwa from './pwa';
  * @param viteEnv - 环境变量配置
  */
 export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
-    const plugins = [
-        vue(),
-        vueJsx(),
-        html(viteEnv),
-        ...unplugin(viteEnv),
-        // unocss(),
-        mock,
-        progress(),
-        // routerPage(),
-        pwa()
-    ];
+  const plugins = [
+    vue(),
+    vueJsx(),
+    html(viteEnv),
+    ...unplugin(viteEnv),
+    // unocss(),
+    mock,
+    progress(),
+    // routerPage(),
+    pwa()
+  ];
 
-    if (viteEnv.VITE_VISUALIZER === 'Y') {
-        plugins.push(visualizer as PluginOption);
-    }
-    if (viteEnv.VITE_COMPRESS === 'Y') {
-        plugins.push(compress(viteEnv));
-    }
+  if (viteEnv.VITE_VISUALIZER === 'Y') {
+    plugins.push(visualizer as PluginOption);
+  }
+  if (viteEnv.VITE_COMPRESS === 'Y') {
+    plugins.push(compress(viteEnv));
+  }
 
-    return plugins;
+  return plugins;
 }
